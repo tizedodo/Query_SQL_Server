@@ -71,35 +71,52 @@ SELECT nro_libro, precio_ori, edicion FROM libro WHERE edicion >1985 and tipo = 
 --		¿Cuáles son los títulos y nombres de los autores de los libros cuyo tipo sea ‘no’ o
 --		aquellos cuyos precios de origen superan $21? 
 
+SELECT titulo, autor FROM libro WHERE  tipo = 'no' or precio_ori >21;
+
+
+
 --A_12. 
 --		Obtener la lista de títulos y precios originales de los libros que se editaron en 1948,
 --		1978 y 1985 
 
-
+SELECT titulo, precio_ori FROM libro WHERE edicion = 1948 and edicion between 1948 and 1978 ;
 
 --A_13. 
 --		Obtener los títulos y ediciones de los libros cuyos precios originales estén dentro del
 --		rango de $12 a $25 inclusive 
 
-
+SELECT titulo, edicion FROM libro WHERE precio_ori between 12 and 25;
 
 
 --A_14.
 --		Obtener la lista de títulos, precios originales y ediciones de aquellos libros cuyos títulos
 --		tengan las letras "R" y "S" en algún lugar y en ese orden. 
 
+SELECT titulo, precio_ori, edicion FROM libro WHERE titulo like '%R%' and titulo like '%S%'
+
+
 --A_15. 
 --		Obtener la lista de títulos, precios originales y ediciones de aquellos libros que tengan
 --		la letra "A" en la segunda posición del título. 
+
+SELECT titulo, precio_ori, edicion FROM libro 
+
 
 
 --A_16.
 --		Ordenar en secuencia ascendente por año de edición los títulos de los libros cuyo tipo
 --		sea ‘no’. Listar también la edición. 
 
+SELECT titulo, precio_ori, edicion FROM libro WHERE SUBSTRING(titulo, 2, 1) = 'A';
+
+
 --A_17. 
 --		Listar los números, ediciones y tipos de libros cuyos precios originales superen los $20.
---		Clasificar por edición en forma descendente y por número de libro ascendente en eseorden. 
+--		Clasificar por edición en forma descendente y por número de libro ascendente en ese orden. 
+
+
+SELECT nro_libro, edicion, tipo FROM libro WHERE precio_ori > 20  ORDER BY tipo DESC, nro_libro asc;
+
 
 
 --A_18. 
@@ -107,8 +124,24 @@ SELECT nro_libro, precio_ori, edicion FROM libro WHERE edicion >1985 and tipo = 
 --		de precios para todos los libros cuyas diferencias de precio sean superiores a $10. 
 
 
+SELECT nro_libro, edicion, tipo, precio_ori, precio_act, (precio_act - precio_ori) AS diferencia_precios FROM (
+
+			SELECT nro_libro, edicion, tipo, precio_ori, precio_act, (precio_act - precio_ori) AS diferencia_precios
+			FROM libro
+)	
+AS subconsulta WHERE diferencia_precios > 10;
+
+
 
 --A_19.	
 --		Listar los números, ediciones, tipos, precios originales, precios actuales y diferencias
 --		de precios para todos los libros cuyas diferencias de precio sean superiores a $10,
 --		clasificado por dicha diferencia en forma descendente. 
+
+
+SELECT nro_libro, edicion, tipo, precio_ori, precio_act, (precio_act - precio_ori) AS diferencia_precios FROM (
+
+			SELECT nro_libro, edicion, tipo, precio_ori, precio_act, (precio_act - precio_ori) AS diferencia_precios
+			FROM libro
+)	
+AS subconsulta WHERE diferencia_precios > 10 ORDER BY diferencia_precios ASC ;
